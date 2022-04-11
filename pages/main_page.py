@@ -1,4 +1,3 @@
-from xml.dom.minidom import Element
 from selenium.webdriver.common.by import By
 
 from .base_page import BasePage
@@ -25,6 +24,9 @@ class MainPage(BasePage):
             results.append(result.text)
         assert link in results, f"Ссылка на {link} не в первых {n} результатах"
 
+    def should_be_pictures_link(self):
+        assert self.is_element_visible(*MainPageLocators.PICTURES_LINK), "Ссылка на картинки отсутствует на странице"
+
     def search_box_input(self, input_text):
         search_box = self.browser.find_element(*MainPageLocators.SEARCH_BOX)
         search_box.click()
@@ -33,3 +35,7 @@ class MainPage(BasePage):
     def search_box_enter_pressed(self):
         search_box = self.browser.find_element(*MainPageLocators.SEARCH_BOX)
         self.enter_button_pressed(search_box)
+
+    def go_to_pictures(self):
+        self.open_in_second_window(*MainPageLocators.PICTURES_LINK)
+        
