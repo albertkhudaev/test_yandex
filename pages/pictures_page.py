@@ -1,5 +1,3 @@
-import json
-
 from .base_page import BasePage
 from .locators import PicturesPageLocators
 
@@ -9,9 +7,7 @@ class PicturesPage(BasePage):
         assert "https://yandex.ru/images/" in self.browser.current_url, "Перешли на неверный url"
 
     def should_be_right_text(self, text):
-        self.is_element_visible(*PicturesPageLocators.QUERY)
-        search_box = self.browser.find_element(*PicturesPageLocators.QUERY)
-        query = json.loads(search_box.get_attribute("data-state"))['query']
+        query = self.browser.execute_script("return document.getElementsByClassName('input__control')[0].value")
         assert text == query, f"На картинке был текст \'{text}\', а в поиске текст \'{query}\'"
 
     def should_be_picture(self):
@@ -31,6 +27,7 @@ class PicturesPage(BasePage):
         first_picture.click()
 
     def open_first_picture(self):
+        self.is_element_visible(*PicturesPageLocators.FIRST_PICTURE)
         first_picture = self.browser.find_element(*PicturesPageLocators.FIRST_PICTURE)
         first_picture.click()
 
